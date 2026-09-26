@@ -15,7 +15,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.APP_NAME,
-    description="GridSkill: Connecting Vocational Talent to Sustainable Tech & Modern Industry (SDG 4.4)",
+    description="GridSkill: Connecting Vocational Talent to Sustainable Tech & Modern Industry (SDG 4)",
     version=settings.APP_VERSION,
     docs_url="/docs",
     redoc_url="/redoc",

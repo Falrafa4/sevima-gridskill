@@ -16,7 +16,7 @@ class GeminiPathwayAgent:
     @classmethod
     def _build_system_prompt(cls) -> str:
         return (
-            "Anda adalah AI Career & Vocational Learning Navigator handal untuk siswa SMK rumpun teknologi di Indonesia (SDG 4.4). "
+            "Anda adalah AI Career & Vocational Learning Navigator handal untuk siswa SMK rumpun teknologi di Indonesia (SDG 4). "
             "Tugas Anda adalah menutup jurang kesenjangan keterampilan (Skill Mismatch) antara kurikulum normatif sekolah "
             "dengan kebutuhan industri modern yang berkelanjutan (Smart Grid, Green Data Center, IoT, Cloud, Renewable Energy Tech).\n\n"
             "Pedoman Analisis:\n"

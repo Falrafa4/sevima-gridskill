@@ -4,14 +4,14 @@ Version: 1.0 (Draft)
 ## 1. Project Overview
 * **Nama Produk:** GridSkill
 * **Tagline:** Connecting Vocational Talent to Sustainable Tech & Modern Industry
-* **Domain Kasus:** SDG 4 - Quality Education (Target 4.4: Peningkatan Keterampilan Vokasi untuk Pekerjaan Layak)
+* **Domain Kasus:** SDG 4 - Quality Education (Target 4: Peningkatan Keterampilan Vokasi untuk Pekerjaan Layak)
 * **Konteks:** Hackathon SEMESTA 8 by SEVIMA (Format Solo, durasi efektif koding 6–7 jam)
 * **Core Philosophy:** Mengubah kurikulum normatif SMK menjadi modul belajar adaptif berbasis proyek nyata (*Project-Based Learning*) via *Autonomous AI Agent*.
 
 ---
 
 ## 2. Problem Statement & Data Validation
-* **Isu Utama (SDG 4.4):** Kualitas pendidikan vokasi di Indonesia menghadapi kendala jurang relevansi kompetensi lulusan terhadap tuntutan industri teknologi modern.
+* **Isu Utama (SDG 4):** Kualitas pendidikan vokasi di Indonesia menghadapi kendala jurang relevansi kompetensi lulusan terhadap tuntutan industri teknologi modern.
 * **Validasi Data Riil BPS & BRIN:**
   * **35,36% Vertical Mismatch (BPS Sakernas):** Lebih dari sepertiga tenaga kerja mengalami ketidaksesuaian level pendidikan (*overeducated* atau *undereducated*).
   * **72,71% Horizontal Mismatch (Sakernas BPS 2022 / BRIN Jurnal Kependudukan Indonesia):** Mayoritas mutlak lulusan SMK bekerja di luar bidang kompetensi kejuruan yang dipelajarinya di sekolah akibat kurikulum yang usang dan ketiadaan portofolio proyek terstandar.
@@ -226,7 +226,7 @@ class AgentOutputSchema(BaseModel):
 ## 10. Rubric & Challenge Points Checklist
 
 * [x] **Core Functionality:** Aplikasi berjalan end-to-end tanpa mock statis.
-* [x] **SDG Alignment (Relevance):** Solusi tepat sasaran menjawab SDG 4.4, Vertical Mismatch (35,36%), dan Horizontal Mismatch (72,71%).
+* [x] **SDG Alignment (Relevance):** Solusi tepat sasaran menjawab SDG 4, Vertical Mismatch (35,36%), dan Horizontal Mismatch (72,71%).
 * [x] **AI Agent Challenge (+10):** Minimal 2 aksi sistem otomatis (Aksi 1: Simpan analisis gap, Aksi 2: Batch insert tasks).
 * [x] **Database Persistence Challenge (+2):** Data tersimpan persisten di PostgreSQL Supabase (bukan localStorage).
 * [x] **Responsive Challenge (+2):** Tampilan Bento Grid adaptif di desktop dan mobile browser.

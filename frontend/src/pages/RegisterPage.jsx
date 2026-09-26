@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
-import { User, Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import { useAuth } from '../context/AuthContext';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { User, Mail, Lock, ArrowRight, AlertCircle } from "lucide-react";
+import Navbar from "../components/Navbar";
+import { useAuth } from "../context/AuthContext";
 
 export default function RegisterPage() {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { register } = useAuth();
@@ -16,7 +16,7 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMsg('');
+    setErrorMsg("");
     setIsSubmitting(true);
 
     try {
@@ -24,11 +24,13 @@ export default function RegisterPage() {
         full_name: fullName,
         email,
         password,
-        role: 'user',
+        role: "user",
       });
-      navigate('/onboarding');
+      navigate("/onboarding");
     } catch (err) {
-      const msg = err.response?.data?.message || 'Registrasi gagal. Pastikan data terisi dengan benar.';
+      const msg =
+        err.response?.data?.message ||
+        "Registrasi gagal. Pastikan data terisi dengan benar.";
       setErrorMsg(msg);
     } finally {
       setIsSubmitting(false);
@@ -42,9 +44,12 @@ export default function RegisterPage() {
 
         <div className="max-w-md mx-auto my-8">
           <div className="spruce-panel p-6 sm:p-8">
-            <h1 className="text-xl font-semibold text-text-primary mb-1">Daftar Akun Talenta Vokasi</h1>
+            <h1 className="text-xl font-semibold text-text-primary mb-1">
+              Daftar Akun Talenta Vokasi
+            </h1>
             <p className="text-xs text-text-secondary mb-6">
-              Buat akun untuk memulai pemetaan karier dan kurikulum proyek adaptif.
+              Buat akun untuk memulai pemetaan karier dan kurikulum proyek
+              adaptif.
             </p>
 
             {errorMsg && (
@@ -56,7 +61,9 @@ export default function RegisterPage() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-text-secondary mb-1">Nama Lengkap</label>
+                <label className="block text-xs font-medium text-text-secondary mb-1">
+                  Nama Lengkap
+                </label>
                 <div className="relative">
                   <User className="w-4 h-4 text-text-muted absolute left-3 top-3 pointer-events-none" />
                   <input
@@ -71,7 +78,9 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-text-secondary mb-1">Alamat Email</label>
+                <label className="block text-xs font-medium text-text-secondary mb-1">
+                  Alamat Email
+                </label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-text-muted absolute left-3 top-3 pointer-events-none" />
                   <input
@@ -86,7 +95,9 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-text-secondary mb-1">Kata Sandi (Min. 6 Karakter)</label>
+                <label className="block text-xs font-medium text-text-secondary mb-1">
+                  Kata Sandi (Min. 6 Karakter)
+                </label>
                 <div className="relative">
                   <Lock className="w-4 h-4 text-text-muted absolute left-3 top-3 pointer-events-none" />
                   <input
@@ -106,14 +117,21 @@ export default function RegisterPage() {
                 disabled={isSubmitting}
                 className="w-full py-2.5 bg-emerald-accent hover:bg-emerald-accent-dark text-base font-semibold text-xs pill-btn transition mt-2 disabled:opacity-50 inline-flex items-center justify-center gap-1.5"
               >
-                <span>{isSubmitting ? 'Mendaftarkan Akun...' : 'Daftar dan Lanjut Onboarding'}</span>
+                <span>
+                  {isSubmitting
+                    ? "Mendaftarkan Akun..."
+                    : "Daftar dan Lanjut Onboarding"}
+                </span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
 
             <div className="mt-6 pt-4 border-t border-border-subtle text-center text-xs text-text-secondary">
-              Sudah memiliki akun?{' '}
-              <Link to="/login" className="text-emerald-accent hover:underline font-medium">
+              Sudah memiliki akun?{" "}
+              <Link
+                to="/login"
+                className="text-emerald-accent hover:underline font-medium"
+              >
                 Masuk Sekarang
               </Link>
             </div>
@@ -122,7 +140,7 @@ export default function RegisterPage() {
       </div>
 
       <footer className="text-center text-xs text-text-muted py-6">
-        GridSkill · SDG 4.4 Vocational Learning Navigator
+        GridSkill · SDG 4 Vocational Learning Navigator
       </footer>
     </div>
   );

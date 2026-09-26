@@ -1,30 +1,32 @@
-import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router';
-import { Mail, Lock, Sparkles, ArrowRight, AlertCircle } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import { useAuth } from '../context/AuthContext';
+import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router";
+import { Mail, Lock, Sparkles, ArrowRight, AlertCircle } from "lucide-react";
+import Navbar from "../components/Navbar";
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/dashboard';
+  const from = location.state?.from?.pathname || "/dashboard";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMsg('');
+    setErrorMsg("");
     setIsSubmitting(true);
 
     try {
       await login(email, password);
       navigate(from, { replace: true });
     } catch (err) {
-      const msg = err.response?.data?.message || 'Login gagal. Periksa kembali email dan password Anda.';
+      const msg =
+        err.response?.data?.message ||
+        "Login gagal. Periksa kembali email dan password Anda.";
       setErrorMsg(msg);
     } finally {
       setIsSubmitting(false);
@@ -32,9 +34,9 @@ export default function LoginPage() {
   };
 
   const fillDemoAccount = () => {
-    setEmail('siswa@gridskill.id');
-    setPassword('siswapassword123');
-    setErrorMsg('');
+    setEmail("siswa@gridskill.id");
+    setPassword("siswapassword123");
+    setErrorMsg("");
   };
 
   return (
@@ -44,7 +46,9 @@ export default function LoginPage() {
 
         <div className="max-w-md mx-auto my-8">
           <div className="spruce-panel p-6 sm:p-8">
-            <h1 className="text-xl font-semibold text-text-primary mb-1">Masuk ke Akun GridSkill</h1>
+            <h1 className="text-xl font-semibold text-text-primary mb-1">
+              Masuk ke Akun GridSkill
+            </h1>
             <p className="text-xs text-text-secondary mb-6">
               Akses roadmap adaptif dan checklist proyek vokasi mandiri Anda.
             </p>
@@ -54,8 +58,12 @@ export default function LoginPage() {
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-emerald-accent shrink-0" />
                 <div>
-                  <span className="text-emerald-accent font-medium block">Akun Demo Juri / Penilai:</span>
-                  <span className="text-text-muted text-[11px]">siswa@gridskill.id</span>
+                  <span className="text-emerald-accent font-medium block">
+                    Akun Demo Juri / Penilai:
+                  </span>
+                  <span className="text-text-muted text-[11px]">
+                    siswa@gridskill.id
+                  </span>
                 </div>
               </div>
               <button
@@ -76,7 +84,9 @@ export default function LoginPage() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-text-secondary mb-1">Alamat Email</label>
+                <label className="block text-xs font-medium text-text-secondary mb-1">
+                  Alamat Email
+                </label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-text-muted absolute left-3 top-3 pointer-events-none" />
                   <input
@@ -91,7 +101,9 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-text-secondary mb-1">Kata Sandi</label>
+                <label className="block text-xs font-medium text-text-secondary mb-1">
+                  Kata Sandi
+                </label>
                 <div className="relative">
                   <Lock className="w-4 h-4 text-text-muted absolute left-3 top-3 pointer-events-none" />
                   <input
@@ -110,14 +122,19 @@ export default function LoginPage() {
                 disabled={isSubmitting}
                 className="w-full py-2.5 bg-emerald-accent hover:bg-emerald-accent-dark text-base font-semibold text-xs pill-btn transition mt-2 disabled:opacity-50 inline-flex items-center justify-center gap-1.5"
               >
-                <span>{isSubmitting ? 'Memproses Masuk...' : 'Masuk ke Dashboard'}</span>
+                <span>
+                  {isSubmitting ? "Memproses Masuk..." : "Masuk ke Dashboard"}
+                </span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
 
             <div className="mt-6 pt-4 border-t border-border-subtle text-center text-xs text-text-secondary">
-              Belum memiliki akun?{' '}
-              <Link to="/register" className="text-emerald-accent hover:underline font-medium">
+              Belum memiliki akun?{" "}
+              <Link
+                to="/register"
+                className="text-emerald-accent hover:underline font-medium"
+              >
                 Daftar Akun Baru
               </Link>
             </div>
@@ -126,7 +143,7 @@ export default function LoginPage() {
       </div>
 
       <footer className="text-center text-xs text-text-muted py-6">
-        GridSkill · SDG 4.4 Vocational Learning Navigator
+        GridSkill · SDG 4 Vocational Learning Navigator
       </footer>
     </div>
   );
