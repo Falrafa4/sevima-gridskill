@@ -124,6 +124,9 @@ class PathwayService:
         if not roadmap:
             raise NotFoundException(f"Roadmap untuk profile_id {profile_id} tidak ditemukan.")
 
+        profile_stmt = select(Profile).where(Profile.id == profile_id)
+        profile = db.execute(profile_stmt).scalars().first()
+
         task_stmt = (
             select(ProjectTask)
             .where(ProjectTask.roadmap_id == roadmap.id)
@@ -132,6 +135,7 @@ class PathwayService:
         tasks = db.execute(task_stmt).scalars().all()
 
         task_responses = [TaskResponse.model_validate(t) for t in tasks]
+        profile_response = ProfileResponse.model_validate(profile) if profile else None
 
         return RoadmapResponse(
             id=roadmap.id,
@@ -141,6 +145,7 @@ class PathwayService:
             skill_gap_summary=roadmap.skill_gap_summary or [],
             created_at=roadmap.created_at,
             tasks=task_responses,
+            profile=profile_response,
         )
 
     @classmethod
