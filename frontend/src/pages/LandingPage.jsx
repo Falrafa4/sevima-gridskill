@@ -110,24 +110,24 @@ export default function LandingPage() {
         >
           <h2 className="text-base sm:text-lg font-semibold text-text-primary mb-3 sm:mb-4">Cara Kerja GridSkill Autonomous Agent</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 text-xs text-text-secondary">
-            <div className="p-3.5 sm:p-4 bg-surface-elevated rounded-lg border border-border-subtle">
-              <div className="flex items-center gap-1.5 text-emerald-accent font-semibold mb-1">
-                <BookOpen className="w-4 h-4 shrink-0" />
-                <span>1. Vocational Profiling</span>
+            <div className="p-3.5 sm:p-6 bg-surface-elevated rounded-lg border border-border-subtle">
+              <div className="flex text-lg items-center gap-3 text-emerald-accent font-bold mb-1">
+                <BookOpen className="w-6 h-6 shrink-0" />
+                <span>Vocational Profiling</span>
               </div>
               <p>Siswa mengisi data kejuruan, keterampilan dasar saat ini, dan minat industri berkelanjutan (Smart Grid, DCIM, IoT).</p>
             </div>
-            <div className="p-4 bg-surface-elevated rounded-lg border border-border-subtle">
-              <div className="flex items-center gap-1.5 text-emerald-accent font-semibold mb-1">
-                <Cpu className="w-4 h-4 shrink-0" />
-                <span>2. Dua Aksi Sistem Otomatis</span>
+            <div className="p-6 bg-surface-elevated rounded-lg border border-border-subtle">
+              <div className="flex text-lg items-center gap-3 text-emerald-accent font-bold mb-1">
+                <Cpu className="w-6 h-6 shrink-0" />
+                <span>Dua Aksi Sistem Otomatis</span>
               </div>
               <p>Gemini AI menganalisis jurang kompetensi, menyimpan roadmap ke database, dan menginjeksi 3-5 modul proyek.</p>
             </div>
-            <div className="p-4 bg-surface-elevated rounded-lg border border-border-subtle sm:col-span-2 lg:col-span-1">
-              <div className="flex items-center gap-1.5 text-emerald-accent font-semibold mb-1">
-                <CheckCircle2 className="w-4 h-4 shrink-0" />
-                <span>3. Verifiable Skill Passport</span>
+            <div className="p-6 bg-surface-elevated rounded-lg border border-border-subtle sm:col-span-2 lg:col-span-1">
+              <div className="flex text-lg items-center gap-3 text-emerald-accent font-bold mb-1">
+                <CheckCircle2 className="w-6 h-6 shrink-0" />
+                <span>Verifiable Skill Passport</span>
               </div>
               <p>Checklist pengerjaan proyek menaikkan Vocational Readiness Score dan menerbitkan paspor sertifikat digital.</p>
             </div>
