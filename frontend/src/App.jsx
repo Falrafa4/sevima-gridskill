@@ -5,10 +5,11 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import OnboardingPage from './pages/OnboardingPage';
 
 function PlaceholderPage({ title, desc }) {
   return (
-    <div className="min-h-screen bg-base-bg text-text-primary flex flex-col items-center justify-center p-6 text-center">
+    <div className="min-h-screen bg-base text-text-primary flex flex-col items-center justify-center p-6 text-center">
       <div className="spruce-panel max-w-md w-full p-8 rounded-xl">
         <h1 className="text-xl font-bold mb-2 text-white">{title}</h1>
         <p className="text-xs text-text-secondary mb-6">{desc}</p>
@@ -35,7 +36,7 @@ export default function App() {
             path="/onboarding"
             element={
               <ProtectedRoute>
-                <PlaceholderPage title="Onboarding Profiler" desc="Input data kejuruan dan minat industri masa depan." />
+                <OnboardingPage />
               </ProtectedRoute>
             }
           />
