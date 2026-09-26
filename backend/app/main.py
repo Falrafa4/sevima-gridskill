@@ -7,11 +7,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from app.core.config import settings
 from app.core.exceptions import AppException
-from app.database.database import get_db, Base, engine
+from app.database.database import get_db
 from app.api.v1 import api_v1_router, api_legacy_router
-
-# Auto-create tables if running in dev mode
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.APP_NAME,
