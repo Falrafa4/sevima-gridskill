@@ -29,17 +29,35 @@ class PathwayService:
         cls,
         db: Session,
         request: PathwayRequest,
+        user_id: Optional[uuid.UUID] = None,
     ) -> PathwayResponse:
-        """Execute autonomous pipeline end-to-end inside atomic DB transaction."""
-        # Step A: Create and persist Student Profile
-        profile = Profile(
-            student_name=request.student_name,
-            vocational_major=request.vocational_major,
-            current_skills=request.current_skills,
-            target_industry=request.target_industry,
-        )
-        db.add(profile)
-        db.flush()  # Populates profile.id without full commit
+        """Execute autonomous pipeline end-to-end inside atomic DB transaction.
+
+        Optionally links the created profile to the authenticated user.
+        """
+        # Step A: Check if profile for this user already exists, or create new
+        profile = None
+        if user_id:
+            profile_stmt = select(Profile).where(Profile.user_id == user_id)
+            profile = db.execute(profile_stmt).scalars().first()
+
+        if profile:
+            # Update existing profile
+            profile.student_name = request.student_name
+            profile.vocational_major = request.vocational_major
+            profile.current_skills = request.current_skills
+            profile.target_industry = request.target_industry
+        else:
+            profile = Profile(
+                user_id=user_id,
+                student_name=request.student_name,
+                vocational_major=request.vocational_major,
+                current_skills=request.current_skills,
+                target_industry=request.target_industry,
+            )
+            db.add(profile)
+
+        db.flush()
 
         # Step B: Autonomous Gemini Analysis (Structured Output)
         agent_plan: AgentOutputSchema = await GeminiPathwayAgent.generate_pathway_plan(request)
@@ -52,7 +70,7 @@ class PathwayService:
             skill_gap_summary=agent_plan.skill_gaps,
         )
         db.add(roadmap)
-        db.flush()  # Populates roadmap.id
+        db.flush()
 
         # Step D: [AKSI SISTEM 2] Bulk insert project tasks into 'project_tasks' table
         task_entities = [

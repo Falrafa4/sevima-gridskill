@@ -1,26 +1,54 @@
+import base64
 from datetime import datetime, timedelta, timezone
+import hashlib
+import hmac
+import os
 from typing import Any, Dict, Optional, Union
-import bcrypt
 import jwt
 from app.core.config import settings
 
 
+def get_password_hash(password: str) -> str:
+    salt = os.urandom(16)
+    iterations = 100_000
+    pwd_hash = hashlib.pbkdf2_hmac(
+        "sha256",
+        password.encode("utf-8"),
+        salt,
+        iterations,
+    )
+    salt_b64 = base64.b64encode(salt).decode("ascii")
+    hash_b64 = base64.b64encode(pwd_hash).decode("ascii")
+    return f"pbkdf2_sha256${iterations}${salt_b64}${hash_b64}"
+
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verifies a plain password against a bcrypt hash."""
     try:
-        return bcrypt.checkpw(
-            plain_password.encode("utf-8")[:72],
-            hashed_password.encode("utf-8"),
-        )
+        if hashed_password.startswith("pbkdf2_sha256$"):
+            parts = hashed_password.split("$")
+            if len(parts) != 4:
+                return False
+            iterations = int(parts[1])
+            salt = base64.b64decode(parts[2].encode("ascii"))
+            expected_hash = base64.b64decode(parts[3].encode("ascii"))
+            computed_hash = hashlib.pbkdf2_hmac(
+                "sha256",
+                plain_password.encode("utf-8"),
+                salt,
+                iterations,
+            )
+            return hmac.compare_digest(expected_hash, computed_hash)
+
+        try:
+            import bcrypt
+            return bcrypt.checkpw(
+                plain_password.encode("utf-8")[:72],
+                hashed_password.encode("utf-8"),
+            )
+        except ImportError:
+            return False
     except Exception:
         return False
-
-
-def get_password_hash(password: str) -> str:
-    """Generates a secure bcrypt hash from plain password (truncated to 72 bytes per bcrypt spec)."""
-    pwd_bytes = password.encode("utf-8")[:72]
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(pwd_bytes, salt).decode("utf-8")
 
 
 def create_access_token(

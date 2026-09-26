@@ -2,6 +2,8 @@ import uuid
 from fastapi import APIRouter, Depends, Path
 from sqlalchemy.orm import Session
 from app.database.database import get_db
+from app.api.deps import get_current_user
+from app.models.user import User
 from app.schemas.task import TaskToggleResponse
 from app.services.pathway_service import PathwayService
 
@@ -17,5 +19,6 @@ router = APIRouter(prefix="/tasks", tags=["Project Tasks"])
 def toggle_task(
     task_id: uuid.UUID = Path(..., description="ID tugas proyek"),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     return PathwayService.toggle_task_status(db, task_id)

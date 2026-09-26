@@ -32,6 +32,26 @@ class NotFoundException(AppException):
         )
 
 
+class UnauthorizedException(AppException):
+    def __init__(self, message: str = "Could not validate credentials", details: Optional[Any] = None):
+        super().__init__(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            message=message,
+            code="UNAUTHORIZED",
+            details=details,
+        )
+
+
+class ForbiddenException(AppException):
+    def __init__(self, message: str = "Not enough permissions to perform this action", details: Optional[Any] = None):
+        super().__init__(
+            status_code=status.HTTP_403_FORBIDDEN,
+            message=message,
+            code="FORBIDDEN",
+            details=details,
+        )
+
+
 class BadRequestException(AppException):
     def __init__(self, message: str = "Bad request", details: Optional[Any] = None):
         super().__init__(
