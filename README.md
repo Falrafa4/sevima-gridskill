@@ -217,16 +217,19 @@ gridskill/
 Untuk mereset database ke kondisi bersih, menjalankan seluruh migrasi Alembic, dan menginjeksi data seeder awal:
 
 - **Linux / macOS:**
-
   ```bash
+  cd backend
   chmod +x scripts/db-fresh.sh
   ./scripts/db-fresh.sh
   ```
 
 - **Windows PowerShell:**
   ```powershell
+  cd backend
   .\scripts\db-fresh.ps1
   ```
+
+> *Catatan: Script `db-fresh` sudah dilengkapi auto-chdir sehingga dapat dieksekusi baik dari folder `backend/` maupun dari dalam `backend/scripts/`.*
 
 **Kredensial Akun Seeder Awal:**
 
