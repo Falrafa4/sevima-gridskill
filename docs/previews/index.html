@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Showcase Hub — GridSkill</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800;900&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b1315; color: #f1f5f9; }
+    .card-hover { transition: all 0.2s ease; }
+    .card-hover:hover { transform: translateY(-4px); }
+  </style>
+</head>
+<body class="min-h-screen p-6 md:p-12 flex flex-col justify-between">
+
+  <div class="max-w-7xl mx-auto w-full">
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold mb-3">
+        ⚡ GRIDSKILL HACKATHON DESIGN BENCHMARK
+      </div>
+      <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-3">
+        Eksplorasi Konsep Desain GridSkill
+      </h1>
+      <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
+        Pilih dan uji coba interaktif setiap variasi konsep desain langsung di browser Anda untuk menentukan identitas visual yang paling tepat sebelum implementasi React + Vite.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+
+      <a href="option1-neo-brutalist.html" class="block bg-white text-slate-900 rounded-2xl p-5 border-3 border-slate-900 shadow-[6px_6px_0px_0px_#111827] card-hover">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-[10px] font-black uppercase px-2 py-0.5 bg-yellow-300 border border-slate-900 rounded">OPSI 1</span>
+          <span class="text-[10px] font-bold text-slate-500 font-mono">Draf PRD</span>
+        </div>
+        <h2 class="text-base font-black mb-1.5">Neo-Brutalist</h2>
+        <p class="text-xs text-slate-600 leading-relaxed mb-4">
+          Border hitam 3px tebal, bayangan balok tanpa blur, warna kontras pop (Lime + Yellow).
+        </p>
+        <div class="py-2 px-3 bg-slate-900 text-white text-xs font-bold rounded-lg text-center">
+          Buka Opsi 1 &rarr;
+        </div>
+      </a>
+
+      <a href="option2-editorial-spruce.html" class="block bg-[#fffcf6] text-[#032125] rounded-2xl p-5 border border-[#ebebeb] shadow-sm card-hover">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-[10px] font-medium uppercase px-2 py-0.5 bg-[#032125] text-[#abffae] rounded-full">OPSI 2</span>
+          <span class="text-[10px] font-medium text-[#437278]">Customer.io</span>
+        </div>
+        <h2 class="text-base font-semibold mb-1.5 tracking-tight">Editorial Spruce</h2>
+        <p class="text-xs text-[#354d51] leading-relaxed mb-4">
+          Palet Spruce Forest tenang, border tipis 1px, sudut tajam 2px, tombol pill bulat.
+        </p>
+        <div class="py-2 px-3 bg-[#0b363b] text-white text-xs font-medium rounded-full text-center">
+          Buka Opsi 2 &rarr;
+        </div>
+      </a>
+
+      <a href="option3-cyber-industrial.html" class="block bg-gradient-to-br from-[#0b262b] to-[#041d20] text-white rounded-2xl p-5 border border-lime-400/40 shadow-lg card-hover">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-[10px] font-mono font-bold uppercase px-2 py-0.5 bg-lime-400 text-slate-950 rounded">OPSI 3</span>
+          <span class="text-[10px] text-lime-300 font-mono">Bento Dark</span>
+        </div>
+        <h2 class="text-base font-bold mb-1.5 tracking-tight text-white">Cyber-Industrial</h2>
+        <p class="text-xs text-slate-300 leading-relaxed mb-4">
+          Bento Grid gelap, aksen lime menyala, kartu glass blur, dan micro-elevation kontras.
+        </p>
+        <div class="py-2 px-3 bg-lime-400 text-slate-950 text-xs font-bold rounded-lg text-center">
+          Buka Opsi 3 &rarr;
+        </div>
+      </a>
+
+      <a href="option4-authentic-craft.html" class="block bg-[#121A1E] text-white rounded-2xl p-5 border-2 border-emerald-500/60 shadow-xl card-hover relative overflow-hidden">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-[10px] font-semibold uppercase px-2 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded">OPSI 4 ★ BARU</span>
+          <span class="text-[10px] text-emerald-400 font-medium">Anti-AI Slop</span>
+        </div>
+        <h2 class="text-base font-bold mb-1.5 tracking-tight text-white">Authentic Workstation</h2>
+        <p class="text-xs text-slate-300 leading-relaxed mb-4">
+          Human-crafted, tenang, fungsional. Warna solid Slate/Spruce, tipografi natural, tanpa efek buatan berlebihan.
+        </p>
+        <div class="py-2 px-3 bg-emerald-600 hover:bg-emerald-500 text-slate-950 text-xs font-semibold rounded-lg text-center transition">
+          Buka Opsi 4 &rarr;
+        </div>
+      </a>
+
+    </div>
+
+    <div class="bg-[#121A1E] border border-[#22323A] rounded-2xl p-6">
+      <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+        <span>📋</span> Matriks Evaluasi Desain
+      </h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left">
+          <thead>
+            <tr class="text-slate-400 border-b border-[#22323A]">
+              <th class="py-3 px-3">Aspek</th>
+              <th class="py-3 px-3">Opsi 1 (Neo-Brutalist)</th>
+              <th class="py-3 px-3">Opsi 2 (Editorial Spruce)</th>
+              <th class="py-3 px-3">Opsi 3 (Cyber Bento)</th>
+              <th class="py-3 px-3 text-emerald-400 font-bold">Opsi 4 (Authentic Craft)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#1D2930] text-slate-300">
+            <tr>
+              <td class="py-3 px-3 font-medium text-white">Tone Visual</td>
+              <td class="py-3 px-3">Keras, kartun, tebal</td>
+              <td class="py-3 px-3">Tenang, tipis, formal</td>
+              <td class="py-3 px-3">Glow, gradasi, dark tech</td>
+              <td class="py-3 px-3 font-medium text-emerald-300">Tactical, bersih, manusiawi</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 font-medium text-white">Resiko "AI Slop"</td>
+              <td class="py-3 px-3 text-amber-300">Sedang (Gumroad style)</td>
+              <td class="py-3 px-3 text-slate-300">Rendah tapi kaku</td>
+              <td class="py-3 px-3 text-rose-400">Tinggi (khas template AI)</td>
+              <td class="py-3 px-3 font-medium text-emerald-400">Nol (Bebas elemen AI klise)</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 font-medium text-white">Kenyamanan Baca</td>
+              <td class="py-3 px-3">Melelahkan jika teks panjang</td>
+              <td class="py-3 px-3">Baik</td>
+              <td class="py-3 px-3">Terdistraksi glow</td>
+              <td class="py-3 px-3 font-medium text-emerald-300">Sangat optimal (High contrast)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="mt-12 text-center text-xs text-slate-500 font-mono">
+    GridSkill Prototype Design Preview Hub · SEMESTA SEVIMA Hackathon 8
+  </footer>
+
+</body>
+</html>
