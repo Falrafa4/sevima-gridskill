@@ -21,6 +21,11 @@ class Settings(BaseSettings):
     APP_PORT: int = 8000
     CORS_ORIGINS: Union[str, List[str]] = ["*"]
 
+    # Security & JWT
+    JWT_SECRET: str = "gridskill_jwt_super_secret_key_semesta_sevima_2026"
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24 hours
+
     # Database (Supabase PostgreSQL / Direct PostgreSQL URI)
     DATABASE_URL: str = Field(
         default="",
@@ -69,7 +74,6 @@ class Settings(BaseSettings):
                 if parsed.hostname and not parsed.hostname.replace(".", "").isdigit():
                     try:
                         resolved_ip = socket.gethostbyname(parsed.hostname)
-                        # Only replace hostname if needed
                         netloc = parsed.netloc.replace(f"@{parsed.hostname}", f"@{resolved_ip}")
                         raw_url = urllib.parse.urlunparse(parsed._replace(netloc=netloc))
                     except Exception:
