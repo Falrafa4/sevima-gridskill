@@ -6,6 +6,7 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import OnboardingPage from './pages/OnboardingPage';
+import DashboardPage from './pages/DashboardPage';
 
 function PlaceholderPage({ title, desc }) {
   return (
@@ -44,7 +45,7 @@ export default function App() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <PlaceholderPage title="Bento Grid Dashboard" desc="Workspace navigasi roadmap dan checklist proyek mandiri." />
+                <DashboardPage />
               </ProtectedRoute>
             }
           />
