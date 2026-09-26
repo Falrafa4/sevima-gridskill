@@ -1,10 +1,26 @@
 import json
 import logging
+import re
 from typing import List
 from app.core.config import settings
 from app.schemas.agent import AgentOutputSchema, TaskItem, PathwayRequest
 
 logger = logging.getLogger(__name__)
+
+JSON_SCHEMA_HINT = """Kembalikan HANYA objek JSON valid dengan struktur persis seperti ini (tanpa markdown backticks, tanpa teks tambahan):
+{
+  "roadmap_title": "string",
+  "analysis_summary": "string",
+  "skill_gaps": ["string", "string", "string"],
+  "tasks": [
+    {
+      "title": "string",
+      "description": "string",
+      "project_category": "Hardware | Software | Optimization",
+      "estimated_hours": 2
+    }
+  ]
+}"""
 
 
 class GeminiPathwayAgent:
@@ -25,7 +41,7 @@ class GeminiPathwayAgent:
             "3. Rancang 3 hingga 5 modul tugas proyek praktis (hands-on project tasks) yang terstruktur dan terukur. "
             "Kategori proyek wajib salah satu dari: 'Hardware', 'Software', atau 'Optimization'.\n"
             "4. Berikan estimasi waktu pengerjaan proyek yang masuk akal (2 - 8 jam per tugas).\n\n"
-            "Kembalikan HANYA format JSON murni yang sesuai dengan skema output tanpa tanda petik markdown backticks."
+            f"{JSON_SCHEMA_HINT}"
         )
 
     @classmethod
@@ -42,44 +58,60 @@ class GeminiPathwayAgent:
         )
 
     @classmethod
-    async def generate_pathway_plan(cls, request: PathwayRequest) -> AgentOutputSchema:
-        """Call Google Gemini 1.5 Flash with structured output.
+    def _candidate_models(cls) -> List[str]:
+        fallbacks = [m.strip() for m in settings.GEMINI_MODEL_FALLBACKS.split(",") if m.strip()]
+        return list(dict.fromkeys([settings.GEMINI_MODEL, *fallbacks]))
 
-        Falls back gracefully if API key is not yet set or unavailable.
+    @classmethod
+    def _extract_json(cls, raw_text: str) -> dict:
+        cleaned = re.sub(r"^```(?:json)?|```$", "", raw_text.strip(), flags=re.MULTILINE).strip()
+        return json.loads(cleaned)
+
+    @classmethod
+    async def _call_model(cls, client, model: str, request: PathwayRequest) -> AgentOutputSchema:
+        from google.genai import types
+
+        response = await client.aio.models.generate_content(
+            model=model,
+            contents=[cls._build_system_prompt(), cls._build_user_prompt(request)],
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json",
+                temperature=0.4,
+                automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
+            ),
+        )
+        raw_text = (response.text or "").strip()
+        if not raw_text:
+            raise ValueError(f"empty response body from model {model}")
+        return AgentOutputSchema.model_validate(cls._extract_json(raw_text))
+
+    @classmethod
+    async def generate_pathway_plan(cls, request: PathwayRequest) -> AgentOutputSchema:
+        """Call Google Gemini asynchronously with structured JSON output.
+
+        Falls back to the next candidate model on 404/API errors, then to a
+        deterministic vocational-major plan if every model and the network fail.
         """
         if settings.GEMINI_API_KEY:
             try:
                 from google import genai
-                from google.genai import types
 
                 client = genai.Client(api_key=settings.GEMINI_API_KEY)
+            except Exception as exc:
+                logger.warning("Gemini client init failed (%s). Using deterministic fallback.", exc)
+                return cls._generate_fallback_plan(request)
 
-                # Request Gemini with JSON response schema
-                response = client.models.generate_content(
-                    model=settings.GEMINI_MODEL,
-                    contents=[
-                        cls._build_system_prompt(),
-                        cls._build_user_prompt(request),
-                    ],
-                    config=types.GenerateContentConfig(
-                        response_mime_type="application/json",
-                        response_schema=AgentOutputSchema,
-                        temperature=0.4,
-                    ),
-                )
+            for model in cls._candidate_models():
+                try:
+                    plan = await cls._call_model(client, model, request)
+                except Exception as exc:
+                    logger.warning("Gemini model %s failed (%s). Trying next candidate.", model, exc)
+                    continue
+                logger.info("Gemini plan generated with model %s.", model)
+                return plan
 
-                raw_text = response.text.strip() if response.text else ""
-                if raw_text:
-                    parsed_json = json.loads(raw_text)
-                    return AgentOutputSchema.model_validate(parsed_json)
+            logger.error("All Gemini candidate models failed. Using deterministic fallback.")
 
-            except Exception as e:
-                logger.warning(
-                    "Gemini API generation failed (%s). Activating deterministic fallback.",
-                    e,
-                )
-
-        # Fallback deterministik berbasis data jurusan siswa (hackathon reliability)
         return cls._generate_fallback_plan(request)
 
     @classmethod
