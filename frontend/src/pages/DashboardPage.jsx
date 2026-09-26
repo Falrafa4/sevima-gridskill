@@ -137,7 +137,7 @@ export default function DashboardPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-12 gap-6"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6"
           >
             <RoadmapCard roadmap={roadmapData} profile={profileData} />
             <ReadinessCard tasks={tasks} />

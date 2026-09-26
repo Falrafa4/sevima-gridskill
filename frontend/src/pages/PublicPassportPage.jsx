@@ -137,17 +137,17 @@ export default function PublicPassportPage() {
             </div>
 
             {/* Candidate Credential Info */}
-            <div className="py-6 border-b border-border-subtle grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-              <div>
-                <span className="text-text-muted block mb-0.5">Nama Talenta Vokasi:</span>
+            <div className="py-6 border-b border-border-subtle grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 text-xs">
+              <div className="p-3 bg-surface-elevated rounded-lg border border-border-subtle">
+                <span className="text-text-muted block text-[11px] mb-0.5">Nama Talenta Vokasi:</span>
                 <span className="font-semibold text-text-primary text-sm">Rizky Ramadhan</span>
               </div>
-              <div>
-                <span className="text-text-muted block mb-0.5">Asal Kejuruan SMK:</span>
-                <span className="font-medium text-text-primary">SIJA (Sistem Informatika & Jaringan)</span>
+              <div className="p-3 bg-surface-elevated rounded-lg border border-border-subtle">
+                <span className="text-text-muted block text-[11px] mb-0.5">Asal Kejuruan SMK:</span>
+                <span className="font-medium text-text-primary">SIJA (Sistem Informatika)</span>
               </div>
-              <div>
-                <span className="text-text-muted block mb-0.5">Spesialisasi Relevan:</span>
+              <div className="p-3 bg-surface-elevated rounded-lg border border-border-subtle sm:col-span-2 lg:col-span-1">
+                <span className="text-text-muted block text-[11px] mb-0.5">Spesialisasi Relevan:</span>
                 <span className="font-medium text-emerald-accent">Smart Energy & Green Data Center</span>
               </div>
             </div>

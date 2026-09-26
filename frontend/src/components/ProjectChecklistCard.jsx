@@ -13,25 +13,25 @@ export default function ProjectChecklistCard({ tasks, onToggleTask, isToggling }
   };
 
   return (
-    <div className="md:col-span-7 spruce-panel p-6 sm:p-8">
-      <div className="flex items-center justify-between mb-6 pb-2 border-b border-border-subtle">
+    <div className="lg:col-span-7 spruce-panel p-5 sm:p-7 lg:p-8">
+      <div className="flex items-center justify-between mb-4 sm:mb-6 pb-2 border-b border-border-subtle">
         <div>
-          <h3 className="text-lg font-semibold tracking-tight text-text-primary">Checklist Proyek Mandiri</h3>
+          <h3 className="text-base sm:text-lg font-semibold tracking-tight text-text-primary">Checklist Proyek Mandiri</h3>
           <p className="text-xs text-text-secondary mt-0.5">
             Selesaikan tugas proyek terstruktur untuk memperbarui skor kesiapan.
           </p>
         </div>
-        <span className="text-xs text-text-muted bg-surface-elevated px-2.5 py-1 rounded border border-border-subtle">
-          {tasks?.length || 0} Tugas Disuntikkan
+        <span className="text-xs text-text-muted bg-surface-elevated px-2.5 py-1 rounded border border-border-subtle shrink-0 ml-2">
+          {tasks?.length || 0} Tugas
         </span>
       </div>
 
-      <div className="space-y-3.5">
+      <div className="space-y-3 sm:space-y-3.5">
         {tasks && tasks.length > 0 ? (
           tasks.map((task) => (
             <div
               key={task.id}
-              className={`p-4 border rounded-lg flex items-start gap-3.5 transition-colors ${
+              className={`p-3.5 sm:p-4 border rounded-lg flex items-start gap-3 sm:gap-3.5 transition-colors ${
                 task.is_completed
                   ? 'bg-surface border-border-subtle opacity-85'
                   : 'bg-surface-elevated border-border-subtle hover:border-border-strong'
@@ -42,12 +42,12 @@ export default function ProjectChecklistCard({ tasks, onToggleTask, isToggling }
                 checked={task.is_completed}
                 disabled={isToggling}
                 onChange={() => onToggleTask(task.id)}
-                className="w-4 h-4 mt-1 accent-emerald-accent rounded cursor-pointer"
+                className="w-4 h-4 mt-1 accent-emerald-accent rounded cursor-pointer shrink-0"
               />
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center justify-between gap-1 mb-1">
                   <h4
-                    className={`text-sm font-medium transition ${
+                    className={`text-xs sm:text-sm font-medium transition ${
                       task.is_completed ? 'line-through text-text-muted' : 'text-text-primary'
                     }`}
                   >
@@ -62,16 +62,16 @@ export default function ProjectChecklistCard({ tasks, onToggleTask, isToggling }
                   </span>
                 </div>
 
-                <p className="text-xs text-text-secondary leading-relaxed mb-2.5">
+                <p className="text-xs text-text-secondary leading-relaxed mb-2 sm:mb-2.5">
                   {task.description}
                 </p>
 
-                <div className="flex items-center gap-3 text-xs text-text-muted">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[11px] sm:text-xs text-text-muted">
                   <span className="inline-flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5" />
                     <span>Estimasi: {task.estimated_hours || 2} Jam</span>
                   </span>
-                  <span>•</span>
+                  <span className="hidden sm:inline">•</span>
                   <span className="inline-flex items-center gap-1 font-medium">
                     {task.is_completed ? (
                       <>

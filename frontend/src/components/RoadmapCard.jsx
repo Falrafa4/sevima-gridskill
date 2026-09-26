@@ -5,19 +5,19 @@ export default function RoadmapCard({ roadmap, profile }) {
   const navigate = useNavigate();
 
   return (
-    <div className="md:col-span-8 spruce-panel p-6 sm:p-8 flex flex-col justify-between">
+    <div className="lg:col-span-8 spruce-panel p-5 sm:p-7 lg:p-8 flex flex-col justify-between">
       <div>
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-text-secondary mb-3">
           <span className="uppercase tracking-wide text-[10px] font-semibold text-emerald-accent flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" />
+            <Sparkles className="w-3.5 h-3.5 shrink-0" />
             <span>Analisis Sistem AI</span>
           </span>
-          <span className="text-text-muted">
+          <span className="text-text-muted text-[11px] sm:text-xs">
             Target: {profile?.target_industry || 'Smart Energy & Green Tech'}
           </span>
         </div>
 
-        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-text-primary mb-3 leading-snug">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-text-primary mb-3 leading-snug">
           {roadmap?.title || 'Roadmap Akselerasi Vokasi Menuju Industri Masa Depan'}
         </h2>
 

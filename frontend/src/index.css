@@ -62,6 +62,11 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.2s ease, color 0.2s ease;
+  overflow-x: clip;
+}
+
+html {
+  overflow-x: clip;
 }
 
 *, html {

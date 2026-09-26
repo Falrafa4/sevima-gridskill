@@ -212,18 +212,18 @@ export default function OnboardingPage() {
                     })}
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="text"
                       value={customSkill}
                       onChange={(e) => setCustomSkill(e.target.value)}
                       placeholder="Tambah skill lain (misal: Docker, Modbus)..."
-                      className="flex-1 px-3 py-1.5 bg-surface-elevated border border-border-subtle focus:border-emerald-accent text-text-primary text-xs rounded-lg outline-none"
+                      className="flex-1 px-3.5 py-2 bg-surface-elevated border border-border-subtle focus:border-emerald-accent text-text-primary text-xs rounded-lg outline-none"
                     />
                     <button
                       type="button"
                       onClick={handleAddCustomSkill}
-                      className="px-3 py-1.5 bg-surface-elevated hover:bg-border-strong text-text-primary border border-border-subtle rounded-lg text-xs font-medium transition"
+                      className="px-4 py-2 bg-surface-elevated hover:bg-border-strong text-text-primary border border-border-subtle rounded-lg text-xs font-medium transition shrink-0 cursor-pointer text-center"
                     >
                       + Tambah
                     </button>

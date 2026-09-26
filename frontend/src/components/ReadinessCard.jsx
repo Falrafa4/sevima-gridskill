@@ -6,7 +6,7 @@ export default function ReadinessCard({ tasks }) {
   const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   return (
-    <div className="md:col-span-4 spruce-panel p-6 sm:p-8 flex flex-col justify-between bg-surface-alt">
+    <div className="lg:col-span-4 spruce-panel p-5 sm:p-7 lg:p-8 flex flex-col justify-between bg-surface-alt">
       <div>
         <div className="flex items-center justify-between mb-1">
           <span className="text-[10px] uppercase tracking-wide text-text-muted font-semibold block">
@@ -17,11 +17,11 @@ export default function ReadinessCard({ tasks }) {
           </span>
         </div>
 
-        <h3 className="text-xl font-medium tracking-tight text-text-primary mb-6">Vocational Readiness</h3>
+        <h3 className="text-lg sm:text-xl font-medium tracking-tight text-text-primary mb-4 sm:mb-6">Vocational Readiness</h3>
 
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <div className="flex items-baseline gap-2 mb-2">
-            <span className="text-6xl font-light tracking-tight text-text-primary">
+            <span className="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-text-primary">
               {percentage}%
             </span>
             <span className="text-xs text-emerald-accent font-medium">
