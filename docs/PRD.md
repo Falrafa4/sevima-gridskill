@@ -27,7 +27,7 @@ Version: 1.0 (Draft)
 
 ## 4. Tech Stack & Repository Structure
 Sesuai regulasi kompetisi (wajib 1 repositori GitHub monorepo):
-* **Frontend:** React.js (Vite, TypeScript, Tailwind CSS, Lucide Icons, Shadcn/UI primitives).
+* **Frontend:** React.js (Vite, JavaScript, Tailwind CSS, Lucide Icons, Shadcn/UI primitives).
 * **Backend:** FastAPI (Python 3.10+, Pydantic v2, Uvicorn, Asynchronous ASGI).
 * **Database & BaaS:** Supabase (PostgreSQL, Cloud Hosted).
 * **AI Engine:** Google Gemini API (Model: `gemini-1.5-flash` dengan JSON Structured Output).
@@ -40,9 +40,8 @@ gridskill/
 │   ├── src/
 │   │   ├── components/   # Bento Grid, Cards, Forms, Badges
 │   │   ├── services/     # Axios / Fetch API client
-│   │   ├── types/        # TypeScript interfaces
-│   │   ├── App.tsx
-│   │   └── main.tsx
+│   │   ├── App.jsx
+│   │   └── main.jsx
 │   ├── package.json
 │   ├── vite.config.ts
 │   └── tailwind.config.js
