@@ -39,13 +39,17 @@ export default function DashboardPage() {
       const data = await pathwayService.getRoadmap(savedProfileId);
       setRoadmapData(data);
       setTasks(data.tasks || []);
-      setProfileData({
-        id: data.profile_id,
-        student_name: user?.full_name || 'Rizky Ramadhan',
-        vocational_major: 'SIJA',
-        current_skills: ['Networking', 'Basic Linux', 'IoT Arduino'],
-        target_industry: 'Smart Energy & Green Data Center',
-      });
+      if (data.profile) {
+        setProfileData(data.profile);
+      } else {
+        setProfileData({
+          id: data.profile_id,
+          student_name: user?.full_name || 'Rizky Ramadhan',
+          vocational_major: 'SIJA',
+          current_skills: ['Networking', 'Basic Linux', 'IoT Arduino'],
+          target_industry: 'Smart Energy & Green Data Center',
+        });
+      }
     } catch (err) {
       if (err.response && err.response.status === 404) {
         setHasNoProfile(true);
