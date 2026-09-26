@@ -8,6 +8,7 @@ from sqlalchemy import text
 from app.core.config import settings
 from app.core.exceptions import AppException
 from app.database.database import get_db, Base, engine
+from app.api.v1 import api_v1_router, api_legacy_router
 
 # Auto-create tables if running in dev mode
 Base.metadata.create_all(bind=engine)
@@ -68,6 +69,10 @@ async def pydantic_validation_exception_handler(request: Request, exc: Validatio
             "details": exc.errors(),
         },
     )
+
+
+app.include_router(api_v1_router)
+app.include_router(api_legacy_router)
 
 
 @app.get("/", tags=["Root"])
