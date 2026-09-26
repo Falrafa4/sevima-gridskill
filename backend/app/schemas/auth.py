@@ -1,20 +1,20 @@
 import uuid
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict
 from app.models.enums import UserRole
 
 
 class UserRegisterRequest(BaseModel):
-    email: EmailStr = Field(..., example="siswa@gridskill.id")
-    password: str = Field(..., min_length=6, max_length=100, example="siswapassword123")
-    full_name: str = Field(..., min_length=2, max_length=100, example="Rizky Ramadhan")
-    role: Optional[UserRole] = Field(default=UserRole.USER, example=UserRole.USER)
+    email: str = Field(..., min_length=5, max_length=255, pattern=r"^[\w\.-]+@[\w\.-]+\.\w+$", json_schema_extra={"example": "siswa@gridskill.id"})
+    password: str = Field(..., min_length=6, max_length=100, json_schema_extra={"example": "siswapassword123"})
+    full_name: str = Field(..., min_length=2, max_length=100, json_schema_extra={"example": "Rizky Ramadhan"})
+    role: Optional[UserRole] = Field(default=UserRole.USER, json_schema_extra={"example": UserRole.USER})
 
 
 class UserLoginRequest(BaseModel):
-    email: EmailStr = Field(..., example="siswa@gridskill.id")
-    password: str = Field(..., example="siswapassword123")
+    email: str = Field(..., min_length=5, max_length=255, json_schema_extra={"example": "siswa@gridskill.id"})
+    password: str = Field(..., json_schema_extra={"example": "siswapassword123"})
 
 
 class TokenResponse(BaseModel):
@@ -25,7 +25,7 @@ class TokenResponse(BaseModel):
 
 class UserResponse(BaseModel):
     id: uuid.UUID
-    email: EmailStr
+    email: str
     full_name: str
     avatar_url: Optional[str] = None
     role: UserRole
