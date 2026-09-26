@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, Link } from 'react-router';
+import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import RoadmapCard from '../components/RoadmapCard';
 import ReadinessCard from '../components/ReadinessCard';
@@ -7,7 +8,7 @@ import ProjectChecklistCard from '../components/ProjectChecklistCard';
 import SkillPassportCard from '../components/SkillPassportCard';
 import { useAuth } from '../context/AuthContext';
 import { pathwayService } from '../services/api';
-import { AlertCircle, RefreshCw } from 'lucide-react';
+import { AlertCircle, RefreshCw, Sparkles, ArrowRight } from 'lucide-react';
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -19,15 +20,18 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isToggling, setIsToggling] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [hasNoProfile, setHasNoProfile] = useState(false);
 
   const fetchDashboardData = async () => {
     setIsLoading(true);
     setErrorMsg('');
+    setHasNoProfile(false);
 
     const savedProfileId = localStorage.getItem('gridskill_current_profile_id');
 
     if (!savedProfileId) {
-      navigate('/onboarding');
+      setHasNoProfile(true);
+      setIsLoading(false);
       return;
     }
 
@@ -44,10 +48,10 @@ export default function DashboardPage() {
       });
     } catch (err) {
       if (err.response && err.response.status === 404) {
-        navigate('/onboarding');
-        return;
+        setHasNoProfile(true);
+      } else {
+        setErrorMsg('Gagal memuat data roadmap. Pastikan backend terhubung.');
       }
-      setErrorMsg('Gagal memuat data roadmap. Pastikan backend terhubung.');
     } finally {
       setIsLoading(false);
     }
@@ -90,7 +94,7 @@ export default function DashboardPage() {
             </div>
             <button
               onClick={fetchDashboardData}
-              className="inline-flex items-center gap-1 px-3 py-1 bg-surface-elevated text-text-primary rounded border border-border-subtle text-xs"
+              className="inline-flex items-center gap-1 px-3 py-1 bg-surface-elevated text-text-primary rounded border border-border-subtle text-xs cursor-pointer"
             >
               <RefreshCw className="w-3 h-3" />
               <span>Coba Lagi</span>
@@ -98,13 +102,43 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {isLoading ? (
+        {hasNoProfile ? (
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="spruce-panel max-w-lg mx-auto my-12 p-8 text-center space-y-4"
+          >
+            <div className="w-12 h-12 mx-auto rounded-full bg-emerald-accent/15 border border-emerald-accent/30 text-emerald-accent flex items-center justify-center">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <h2 className="text-lg font-semibold text-text-primary">
+              Selamat Datang, {user?.full_name || 'Talenta Vokasi'}!
+            </h2>
+            <p className="text-xs text-text-secondary leading-relaxed">
+              Anda belum memiliki peta jalan pembelajaran adaptif. Mari petakan kejuruan SMK dan target industri masa depan Anda agar AI dapat menghasilkan modul proyek nyata.
+            </p>
+            <div className="pt-2">
+              <Link
+                to="/onboarding"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-accent hover:bg-emerald-accent-dark text-slate-950 font-semibold text-xs pill-btn transition"
+              >
+                <span>Mulai Vocational Profiler</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </motion.div>
+        ) : isLoading ? (
           <div className="py-24 text-center text-text-muted space-y-3">
             <div className="w-8 h-8 mx-auto border-2 border-emerald-accent border-t-transparent rounded-full animate-spin"></div>
             <p className="text-xs">Memuat Bento Grid Workspace...</p>
           </div>
         ) : (
-          <main className="grid grid-cols-1 md:grid-cols-12 gap-6">
+          <motion.main
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 md:grid-cols-12 gap-6"
+          >
             <RoadmapCard roadmap={roadmapData} profile={profileData} />
             <ReadinessCard tasks={tasks} />
             <ProjectChecklistCard
@@ -113,12 +147,12 @@ export default function DashboardPage() {
               isToggling={isToggling}
             />
             <SkillPassportCard profile={profileData} roadmap={roadmapData} />
-          </main>
+          </motion.main>
         )}
       </div>
 
       <footer className="text-center text-xs text-text-muted py-8 mt-12 border-t border-border-subtle">
-        GridSkill · Workspace Navigasi Proyek Vokasi (SDG 4.4)
+        GridSkill · Workspace Navigasi Proyek Vokasi (SDG 4)
       </footer>
     </div>
   );

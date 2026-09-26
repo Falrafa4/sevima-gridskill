@@ -1,5 +1,6 @@
 .omo
 .codegraph
+.playwright-mcp
 .env
 .venv
 node_modules
