@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { BookOpen, Cpu, Sparkles, Check, AlertCircle, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 import { pathwayService } from '../services/api';
@@ -108,7 +109,12 @@ export default function OnboardingPage() {
         <Navbar />
 
         <div className="max-w-2xl mx-auto my-6">
-          <div className="spruce-panel p-6 sm:p-8">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="spruce-panel p-6 sm:p-8"
+          >
             <div className="flex items-center gap-2 text-xs font-semibold text-emerald-accent mb-2">
               <Sparkles className="w-4 h-4" />
               <span>Langkah 1: Vocational Profiling</span>
@@ -118,7 +124,9 @@ export default function OnboardingPage() {
               Petakan Keterampilan Vokasi Anda
             </h1>
             <p className="text-xs sm:text-sm text-text-secondary leading-relaxed mb-6">
-              AI akan membandingkan materi normatif SMK Anda dengan standar kompetensi industri berkelanjutan untuk menghasilkan kurikulum mikro proyek nyata.
+              AI akan membandingkan materi normatif SMK Anda dengan standar
+              kompetensi industri berkelanjutan untuk menghasilkan kurikulum
+              mikro proyek nyata.
             </p>
 
             {errorMsg && (
@@ -135,17 +143,24 @@ export default function OnboardingPage() {
                 </div>
                 <div className="space-y-1">
                   <h3 className="text-sm font-semibold text-text-primary">
-                    {loadingStep === 1 && 'Menganalisis jurang kompetensi kurikulum vs industri...'}
-                    {loadingStep === 2 && 'Merancang modul tugas proyek nyata (Aksi AI 1)...'}
-                    {loadingStep === 3 && 'Menginjeksi checklist proyek ke database (Aksi AI 2)...'}
+                    {loadingStep === 1 &&
+                      "Menganalisis jurang kompetensi kurikulum vs industri..."}
+                    {loadingStep === 2 &&
+                      "Merancang modul tugas proyek nyata (Aksi AI 1)..."}
+                    {loadingStep === 3 &&
+                      "Menginjeksi checklist proyek ke database (Aksi AI 2)..."}
                   </h3>
-                  <p className="text-xs text-text-muted">Proses berlangsung secara otonom dalam beberapa detik.</p>
+                  <p className="text-xs text-text-muted">
+                    Proses berlangsung secara otonom dalam beberapa detik.
+                  </p>
                 </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="block text-xs font-medium text-text-secondary mb-1">Nama Lengkap Siswa</label>
+                  <label className="block text-xs font-medium text-text-secondary mb-1">
+                    Nama Lengkap Siswa
+                  </label>
                   <input
                     type="text"
                     required
@@ -156,7 +171,9 @@ export default function OnboardingPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-text-secondary mb-1">Jurusan SMK Saat Ini</label>
+                  <label className="block text-xs font-medium text-text-secondary mb-1">
+                    Jurusan SMK Saat Ini
+                  </label>
                   <select
                     value={vocationalMajor}
                     onChange={(e) => setVocationalMajor(e.target.value)}
@@ -184,8 +201,8 @@ export default function OnboardingPage() {
                           onClick={() => toggleSkill(skill)}
                           className={`text-xs px-3 py-1.5 rounded-md border transition flex items-center gap-1.5 ${
                             isSelected
-                              ? 'bg-emerald-accent/15 text-emerald-accent border-emerald-accent/40 font-medium'
-                              : 'bg-surface-elevated text-text-secondary border-border-subtle hover:border-border-strong'
+                              ? "bg-emerald-accent/15 text-emerald-accent border-emerald-accent/40 font-medium"
+                              : "bg-surface-elevated text-text-secondary border-border-subtle hover:border-border-strong"
                           }`}
                         >
                           {isSelected && <Check className="w-3 h-3" />}
@@ -214,7 +231,9 @@ export default function OnboardingPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-text-secondary mb-1">Target Industri Masa Depan</label>
+                  <label className="block text-xs font-medium text-text-secondary mb-1">
+                    Target Industri Masa Depan
+                  </label>
                   <select
                     value={targetIndustry}
                     onChange={(e) => setTargetIndustry(e.target.value)}
@@ -239,12 +258,12 @@ export default function OnboardingPage() {
                 </div>
               </form>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
 
       <footer className="text-center text-xs text-text-muted py-6">
-        GridSkill · Menjembatani Kesenjangan Kompetensi Vokasi (SDG 4.4)
+        GridSkill · Vocational Learning Navigator
       </footer>
     </div>
   );

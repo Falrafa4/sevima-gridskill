@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router';
 import { Mail, Lock, Sparkles, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 
@@ -44,7 +45,12 @@ export default function LoginPage() {
         <Navbar />
 
         <div className="max-w-md mx-auto my-8">
-          <div className="spruce-panel p-6 sm:p-8">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="spruce-panel p-6 sm:p-8 shadow-xl"
+          >
             <h1 className="text-xl font-semibold text-text-primary mb-1">Masuk ke Akun GridSkill</h1>
             <p className="text-xs text-text-secondary mb-6">
               Akses roadmap adaptif dan checklist proyek vokasi mandiri Anda.
@@ -129,12 +135,12 @@ export default function LoginPage() {
                 Daftar Akun Baru
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
       <footer className="text-center text-xs text-text-muted py-6">
-        GridSkill · SDG 4.4 Vocational Learning Navigator
+        GridSkill · Vocational Learning Navigator
       </footer>
     </div>
   );

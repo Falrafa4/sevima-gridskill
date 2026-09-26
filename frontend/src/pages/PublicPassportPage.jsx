@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router';
 import { Award, CheckCircle2, Clock, Printer, ArrowLeft, ShieldCheck, AlertCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { pathwayService } from '../services/api';
 
 export default function PublicPassportPage() {
@@ -107,7 +108,12 @@ export default function PublicPassportPage() {
             <p className="text-xs">Memverifikasi keabsahan portofolio siswa...</p>
           </div>
         ) : (
-          <div className="spruce-panel p-6 sm:p-10 border-border-strong bg-surface">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+            className="spruce-panel p-6 sm:p-10 border-border-strong bg-surface shadow-2xl"
+          >
             {/* Header Passport */}
             <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-border-subtle">
               <div className="flex items-center gap-3">
@@ -194,9 +200,9 @@ export default function PublicPassportPage() {
             </div>
 
             <div className="mt-8 pt-6 border-t border-border-subtle text-center text-xs text-text-muted">
-              Dokumen verifikasi kompetensi ini diterbitkan secara otomatis oleh GridSkill untuk menjawab target SDG 4.4 dalam mengatasi kesenjangan lulusan vokasi terhadap industri modern.
+              Dokumen verifikasi kompetensi ini diterbitkan secara otomatis oleh GridSkill untuk menjawab target SDG 4 dalam mengatasi kesenjangan lulusan vokasi terhadap industri modern.
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
 
