@@ -122,10 +122,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <span className="text-text-muted">SEMESTA 8 by SEVIMA</span>
-            </li>
-            <li>
-              <span className="text-emerald-accent font-medium">FastAPI + Supabase + React</span>
+              <span className="text-text-muted">SEMESTA Batch 8 by SEVIMA</span>
             </li>
           </ul>
         </div>
@@ -134,7 +131,7 @@ export default function Footer() {
       <div className="pt-6 border-t border-border-subtle flex flex-wrap items-center justify-between gap-3 text-xs text-text-muted">
         <p>&copy; {new Date().getFullYear()} GridSkill. Seluruh hak cipta dilindungi.</p>
         <span className="text-[11px] text-text-secondary">
-          Dibuat untuk Hackathon Nasional SEMESTA SEVIMA 8
+          Dibuat untuk Hackathon SEMESTA Batch 8
         </span>
       </div>
     </footer>

@@ -67,6 +67,7 @@ body {
 *, html {
   scroll-behavior: smooth;
   scrollbar-width: none;
+  scroll-margin-top: 10rem;
 }
 
 ::selection {

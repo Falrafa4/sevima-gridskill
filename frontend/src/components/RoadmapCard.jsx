@@ -10,7 +10,7 @@ export default function RoadmapCard({ roadmap, profile }) {
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-text-secondary mb-3">
           <span className="uppercase tracking-wide text-[10px] font-semibold text-emerald-accent flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Analisis Mandiri AI · Gemini 1.5 Flash</span>
+            <span>Analisis Sistem AI</span>
           </span>
           <span className="text-text-muted">
             Target: {profile?.target_industry || 'Smart Energy & Green Tech'}
