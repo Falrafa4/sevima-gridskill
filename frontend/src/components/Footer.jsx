@@ -1,5 +1,5 @@
+import { Globe } from 'lucide-react';
 import { Link } from 'react-router';
-import { Zap, Globe } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -8,9 +8,7 @@ export default function Footer() {
         {/* Left Side: Brand, Description, Social */}
         <div className="md:col-span-6 space-y-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-surface-elevated border border-border-strong text-emerald-accent flex items-center justify-center">
-              <Zap className="w-3.5 h-3.5" />
-            </div>
+            <img src="/logo.webp" alt="GridSkill Logo" className="w-7 h-7 object-contain" />
             <span className="text-base font-semibold text-text-primary tracking-tight">GridSkill</span>
           </div>
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Zap, LogOut, LayoutDashboard, UserCheck, Sun, Moon } from 'lucide-react';
+import { LogOut, LayoutDashboard, UserCheck, Sun, Moon } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import LogoutModal from './LogoutModal';
 
@@ -44,9 +44,7 @@ export default function Navbar() {
     <>
       <header className="sticky top-4 z-40 mb-8 spruce-panel px-4 sm:px-6 py-3.5 flex items-center justify-between backdrop-blur-md bg-surface/90 shadow-md">
         <Link to="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-surface-elevated border border-border-strong text-emerald-accent flex items-center justify-center">
-            <Zap className="w-4 h-4 text-emerald-accent" />
-          </div>
+          <img src="/logo.webp" alt="GridSkill Logo" className="w-8 h-8 object-contain" />
           <span className="text-base font-semibold text-text-primary tracking-tight">GridSkill</span>
           <span className="text-xs text-text-muted pl-3 border-l border-border-subtle hidden sm:inline-block">
             Vocational Navigator
