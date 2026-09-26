@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -41,30 +41,30 @@ api.interceptors.response.use(
 
 export const authService = {
   login: async (email, password) => {
-    const response = await api.post('/api/v1/auth/login', { email, password });
+    const response = await api.post('/auth/login', { email, password });
     return response.data;
   },
   register: async (payload) => {
-    const response = await api.post('/api/v1/auth/register', payload);
+    const response = await api.post('/auth/register', payload);
     return response.data;
   },
   getMe: async () => {
-    const response = await api.get('/api/v1/auth/me');
+    const response = await api.get('/auth/me');
     return response.data;
   },
 };
 
 export const pathwayService = {
   generatePathway: async (payload) => {
-    const response = await api.post('/api/v1/agent/generate-pathway', payload);
+    const response = await api.post('/agent/generate-pathway', payload);
     return response.data;
   },
   getRoadmap: async (profileId) => {
-    const response = await api.get(`/api/v1/roadmaps/${profileId}`);
+    const response = await api.get(`/roadmaps/${profileId}`);
     return response.data;
   },
   toggleTask: async (taskId) => {
-    const response = await api.patch(`/api/v1/tasks/${taskId}/toggle`);
+    const response = await api.patch(`/tasks/${taskId}/toggle`);
     return response.data;
   },
 };
