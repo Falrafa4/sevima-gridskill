@@ -15,8 +15,8 @@
 7. [Panduan Instalasi & Menjalankan Project](#panduan-instalasi--menjalankan-project)
    - [Prasyarat Sistem](#prasyarat-sistem)
    - [Setup Backend (FastAPI)](#setup-backend-fastapi)
+   - [Migrasi Database & Seeding (db-fresh)](#migrasi-database--seeding-db-fresh)
    - [Setup Frontend (React + Vite)](#setup-frontend-react--vite)
-   - [Setup Database Supabase](#setup-database-supabase)
 8. [API Endpoints Reference](#api-endpoints-reference)
 9. [Changelog & Status Pengembangan](#changelog--status-pengembangan)
 
@@ -56,7 +56,8 @@ Pendidikan vokasi di Indonesia menghadapi tantangan struktural berupa tingginya 
 ### Backend
 * **Framework:** FastAPI (Python 3.10+, Asynchronous ASGI)
 * **Validasi Skema:** Pydantic v2 & Pydantic-Settings
-* **Database ORM & Driver:** SQLAlchemy 2.0 + psycopg2-binary
+* **Database ORM & Migrasi:** SQLAlchemy 2.0 + Alembic + psycopg2-binary
+* **Keamanan:** JSON Web Token (PyJWT) + PBKDF2-HMAC-SHA256 / Bcrypt
 * **AI Engine:** Google Gemini API (`google-genai` SDK dengan JSON Structured Output)
 * **Server:** Uvicorn
 
@@ -78,7 +79,7 @@ Sistem menerapkan arsitektur *Agentic AI* dengan minimal 2 aksi sistem mandiri:
 [Input Siswa: Form Minat & Skill Vokasi]
                    │
                    ▼
-  [POST /api/v1/agent/generate-pathway] (FastAPI)
+  [POST /api/v1/agent/generate-pathway] (FastAPI, JWT Protected)
                    │
                    ▼
 [Gemini 1.5 Flash: JSON Structured Output Engine]
@@ -108,13 +109,19 @@ gridskill/
 ├── backend/
 │   ├── app/
 │   │   ├── api/
-│   │   │   └── v1/            # API Route controllers (agent, roadmaps, tasks)
-│   │   ├── core/              # Konfigurasi Pydantic Settings & Error handling
-│   │   ├── database/          # Database engine SQLAlchemy & session dependencies
-│   │   ├── models/            # SQLAlchemy Database Models (profiles, roadmaps, project_tasks)
-│   │   ├── schemas/           # Pydantic v2 DTOs & Gemini structured output schemas
-│   │   ├── services/          # AI Orchestrator & Google GenAI clients
+│   │   │   ├── v1/            # API Route controllers (auth, agent, roadmaps, tasks)
+│   │   │   └── deps.py        # Dependency injection (JWT bearer authentication & current_user)
+│   │   ├── core/              # Konfigurasi Pydantic Settings, exceptions, dan security/JWT
+│   │   ├── database/          # Database engine SQLAlchemy, get_db, dan seeder
+│   │   ├── models/            # SQLAlchemy Models (users, profiles, roadmaps, project_tasks)
+│   │   ├── schemas/           # Pydantic v2 DTOs (auth, agent, profile, roadmap, task)
+│   │   ├── services/          # AI Orchestrator & AuthService
 │   │   └── main.py            # FastAPI entry point, CORS middleware, exception handlers
+│   ├── migrations/            # Alembic database migrations environment & versions
+│   ├── scripts/               # Script reset database (db-fresh.sh & db-fresh.ps1)
+│   ├── tests/                 # Pytest automated test suite
+│   ├── alembic.ini            # Konfigurasi Alembic
+│   ├── pytest.ini             # Konfigurasi Pytest
 │   ├── requirements.txt       # Dependencies Python
 │   ├── .env.example           # Contoh environment variables backend
 │   └── .gitignore
@@ -173,6 +180,11 @@ gridskill/
    ENVIRONMENT="development"
    CORS_ORIGINS="*"
 
+   # JWT Security
+   JWT_SECRET="ganti_dengan_rahasia_acak_panjang"
+   JWT_ALGORITHM="HS256"
+   ACCESS_TOKEN_EXPIRE_MINUTES=1440
+
    # Supabase Direct PostgreSQL Connection (Transaction / Session pooler)
    DATABASE_URL="postgresql+psycopg2://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres"
 
@@ -189,43 +201,24 @@ gridskill/
 
 ---
 
-### Setup Database Supabase
+### Migrasi Database & Seeding (db-fresh)
 
-Jalankan script DDL berikut pada menu **SQL Editor** di Dashboard Supabase:
+Untuk mereset database ke kondisi bersih, menjalankan seluruh migrasi Alembic, dan menginjeksi data seeder awal:
 
-```sql
--- 1. Tabel Profil Siswa
-CREATE TABLE IF NOT EXISTS profiles (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    student_name VARCHAR(100) NOT NULL,
-    vocational_major VARCHAR(100) NOT NULL,
-    current_skills TEXT[] DEFAULT '{}',
-    target_industry VARCHAR(100) NOT NULL,
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
+* **Linux / macOS:**
+  ```bash
+  chmod +x scripts/db-fresh.sh
+  ./scripts/db-fresh.sh
+  ```
 
--- 2. Tabel Roadmap Belajar (Aksi AI 1)
-CREATE TABLE IF NOT EXISTS roadmaps (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    profile_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
-    title VARCHAR(150) NOT NULL,
-    analysis_summary TEXT NOT NULL,
-    skill_gap_summary TEXT[] DEFAULT '{}',
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
+* **Windows PowerShell:**
+  ```powershell
+  .\scripts\db-fresh.ps1
+  ```
 
--- 3. Tabel Checklist Tugas Proyek (Aksi AI 2)
-CREATE TABLE IF NOT EXISTS project_tasks (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    roadmap_id UUID REFERENCES roadmaps(id) ON DELETE CASCADE,
-    title VARCHAR(150) NOT NULL,
-    description TEXT NOT NULL,
-    project_category VARCHAR(50) NOT NULL,
-    estimated_hours INT DEFAULT 2,
-    is_completed BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
-```
+**Kredensial Akun Seeder Awal:**
+* **Admin:** `admin@gridskill.id` / `adminpassword123`
+* **Siswa Contoh:** `siswa@gridskill.id` / `siswapassword123`
 
 ---
 
@@ -251,21 +244,31 @@ CREATE TABLE IF NOT EXISTS project_tasks (
 
 ## 📡 API Endpoints Reference
 
-| Method | Endpoint | Deskripsi |
-|---|---|---|
-| `GET` | `/` | Root informasi status aplikasi & versi |
-| `GET` | `/health` | Health-check koneksi database |
-| `POST` | `/api/v1/agent/generate-pathway` | Memicu AI Agent menganalisis profil dan mengeksekusi 2 aksi insert ke DB |
-| `GET` | `/api/v1/roadmaps/{profile_id}` | Mengambil detail roadmap dan daftar tugas proyek siswa |
-| `PATCH` | `/api/v1/tasks/{task_id}/toggle` | Mengubah status centang tugas proyek (`is_completed`) |
+| Method | Endpoint | Akses | Deskripsi |
+|---|---|---|---|
+| `GET` | `/` | Publik | Root informasi status aplikasi & versi |
+| `GET` | `/health` | Publik | Health-check koneksi database |
+| `POST` | `/api/v1/auth/register` | Publik | Registrasi akun pengguna baru & penerbitan token JWT |
+| `POST` | `/api/v1/auth/login` | Publik | Login pengguna & penerbitan token JWT |
+| `GET` | `/api/v1/auth/me` | 🔒 Bearer JWT | Mengambil profil pengguna yang sedang login |
+| `POST` | `/api/v1/agent/generate-pathway` | 🔒 Bearer JWT | Memicu AI Agent menganalisis profil dan mengeksekusi 2 aksi insert ke DB |
+| `GET` | `/api/v1/roadmaps/{profile_id}` | 🔒 Bearer JWT | Mengambil detail roadmap dan daftar tugas proyek siswa |
+| `PATCH` | `/api/v1/tasks/{task_id}/toggle` | 🔒 Bearer JWT | Mengubah status centang tugas proyek (`is_completed`) |
 
 ---
 
 ## 📝 Changelog & Status Pengembangan
 
+- **v0.2.0 (Authentication, Migrations & Security):**
+  - Implementasi Autentikasi Pengguna menggunakan JWT (PyJWT) dan PBKDF2-HMAC-SHA256.
+  - Penambahan tabel `users` dengan relasi 1:1 ke tabel `profiles`.
+  - Pemasangan middleware proteksi API pada endpoint agent, roadmap, dan task toggle.
+  - Setup database migrations menggunakan Alembic (`alembic.ini`, `migrations/env.py`, `0001_initial_schema.py`).
+  - Penambahan idempotent database seeder (`app/database/seed.py`) dengan akun Admin dan Siswa demo.
+  - Penambahan script otomasi `scripts/db-fresh.sh` dan `scripts/db-fresh.ps1`.
+  - Penambahan pengujian unit & integrasi untuk seluruh skenario auth dan proteksi route.
 - **v0.1.0 (Initial Setup):**
   - Scaffold struktur monorepo (`backend/` & `frontend/`).
   - Inisialisasi konfigurasi core backend, CORS, dan standardized exception handlers.
-  - Implementasi SQLAlchemy 2.0 ORM models (`Profile`, `Roadmap`, `ProjectTask`) dengan dukungan PostgreSQL UUID & fallback SQLite lokal.
+  - Implementasi SQLAlchemy 2.0 ORM models (`Profile`, `Roadmap`, `ProjectTask`).
   - Implementasi skema Pydantic v2 untuk DTO dan Gemini Structured Output (`AgentOutputSchema`).
-  - Penyusunan dokumentasi komprehensif `README.md`.
