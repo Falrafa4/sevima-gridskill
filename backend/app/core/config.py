@@ -1,4 +1,5 @@
 import os
+import socket
 import urllib.parse
 from typing import List, Union
 from pydantic import Field, field_validator
@@ -50,18 +51,34 @@ class Settings(BaseSettings):
         return v
 
     def get_database_url(self) -> str:
-        """Returns valid database connection string, fallback to local sqlite if not set."""
-        if self.DATABASE_URL:
-            # Fix postgres:// -> postgresql:// for SQLAlchemy if provided by cloud host
-            url = self.DATABASE_URL
-            if url.startswith("postgres://"):
-                url = url.replace("postgres://", "postgresql+psycopg2://", 1)
-            elif url.startswith("postgresql://") and "+psycopg2" not in url:
-                url = url.replace("postgresql://", "postgresql+psycopg2://", 1)
-            return url
-        if self.DB_HOST and self.DB_USER:
+        """Returns valid database connection string, resolving hostname when necessary."""
+        raw_url = self.DATABASE_URL
+        if not raw_url and self.DB_HOST and self.DB_USER:
             encoded_password = urllib.parse.quote_plus(self.DB_PASSWORD)
-            return f"postgresql+psycopg2://{self.DB_USER}:{encoded_password}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?sslmode=require"
+            raw_url = f"postgresql://{self.DB_USER}:{encoded_password}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?sslmode=require"
+
+        if raw_url:
+            if raw_url.startswith("postgres://"):
+                raw_url = raw_url.replace("postgres://", "postgresql+psycopg2://", 1)
+            elif raw_url.startswith("postgresql://") and "+psycopg2" not in raw_url:
+                raw_url = raw_url.replace("postgresql://", "postgresql+psycopg2://", 1)
+
+            # Resolve domain to IP fallback if libpq resolver encounters glibc/systemd-resolved issues
+            try:
+                parsed = urllib.parse.urlparse(raw_url)
+                if parsed.hostname and not parsed.hostname.replace(".", "").isdigit():
+                    try:
+                        resolved_ip = socket.gethostbyname(parsed.hostname)
+                        # Only replace hostname if needed
+                        netloc = parsed.netloc.replace(f"@{parsed.hostname}", f"@{resolved_ip}")
+                        raw_url = urllib.parse.urlunparse(parsed._replace(netloc=netloc))
+                    except Exception:
+                        pass
+            except Exception:
+                pass
+
+            return raw_url
+
         # ponytail: sqlite fallback for offline local hackathon dev
         return "sqlite:///./gridskill_dev.db"
 
